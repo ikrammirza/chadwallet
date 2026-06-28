@@ -74,12 +74,17 @@ export default function TradeLayout() {
 
         {/* Middle — chart & info */}
         <div
-          className={`${
-            mobilePanel === 'chart' ? 'flex' : 'hidden'
-          } md:flex flex-1 min-w-0 h-full overflow-hidden`}
-        >
-          <MiddlePanel token={selectedToken} tokenData={tokenData} />
-        </div>
+  className={`${
+    mobilePanel === 'chart' ? 'flex' : 'hidden'
+  } md:flex flex-1 min-w-0 h-full overflow-hidden`}
+>
+  <div className="flex-1 min-w-0 overflow-hidden border-l border-[#2A2A2A]">
+    <MiddlePanel
+      token={selectedToken}
+      tokenData={tokenData}
+    />
+  </div>
+</div>
 
         {/* Right — buy/sell */}
         <div
