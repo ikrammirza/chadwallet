@@ -18,28 +18,36 @@ const PANELS = [
 export default function TradeLayout() {
   const [selectedToken, setSelectedToken] = useState(null);
   const [mobilePanel, setMobilePanel] = useState('chart');
+
   const { data: tokenData } = useTokenData(selectedToken?.address);
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const tokenAddress = searchParams.get('token');
+
     if (tokenAddress) {
       setSelectedToken((prev) =>
-        prev?.address === tokenAddress ? prev : { address: tokenAddress }
+        prev?.address === tokenAddress
+          ? prev
+          : { address: tokenAddress }
       );
     }
   }, [searchParams]);
 
+
   return (
     <div className="flex flex-col h-screen bg-chad-black overflow-hidden">
+
       <TradeNavbar />
 
       <div className="flex-shrink-0">
         <TokenBanner variant="inline" />
       </div>
 
-      {/* Mobile panel tabs */}
+      {/* Mobile tabs */}
       <div className="flex md:hidden border-b border-chad-border flex-shrink-0">
+
         {PANELS.map((p) => (
           <button
             key={p.id}
@@ -53,48 +61,110 @@ export default function TradeLayout() {
             {p.label}
           </button>
         ))}
+
       </div>
 
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Left — trending */}
+      {/* Main panels */}
+      <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
+
+
+        {/* LEFT PANEL */}
         <div
           className={`${
-            mobilePanel === 'trending' ? 'flex' : 'hidden'
-          } md:flex w-full md:w-[240px] lg:w-[260px] flex-shrink-0 h-full overflow-hidden`}
+            mobilePanel === 'trending'
+              ? 'flex'
+              : 'hidden'
+          }
+          md:flex
+          w-full
+          md:w-[280px]
+          lg:w-[300px]
+          shrink-0
+          h-full
+          overflow-hidden`}
         >
+
           <LeftPanel
+
             selectedToken={selectedToken}
+
             onSelectToken={(token) => {
               setSelectedToken(token);
               setMobilePanel('chart');
             }}
-            preselectedAddress={searchParams.get('token')}
+
+            preselectedAddress={
+              searchParams.get('token')
+            }
+
           />
+
         </div>
 
-        {/* Middle — chart & info */}
-        <div
-  className={`${
-    mobilePanel === 'chart' ? 'flex' : 'hidden'
-  } md:flex flex-1 min-w-0 h-full overflow-hidden`}
->
-  <div className="flex-1 min-w-0 overflow-hidden border-l border-[#2A2A2A]">
-    <MiddlePanel
-      token={selectedToken}
-      tokenData={tokenData}
-    />
-  </div>
-</div>
-
-        {/* Right — buy/sell */}
+        {/* MIDDLE PANEL */}
         <div
           className={`${
-            mobilePanel === 'trade' ? 'flex' : 'hidden'
-          } md:flex w-full md:w-[300px] lg:w-[320px] flex-shrink-0 h-full overflow-hidden`}
+            mobilePanel === 'chart'
+              ? 'flex'
+              : 'hidden'
+          }
+          md:flex
+          flex-1
+          min-w-0
+          h-full
+          overflow-hidden`}
         >
-          <RightPanel token={selectedToken} tokenData={tokenData} />
+
+          <div className="
+            flex-1
+            min-w-0
+            h-full
+            overflow-hidden
+            border-l
+            border-[#2A2A2A]
+          ">
+
+            <MiddlePanel
+
+              token={selectedToken}
+
+              tokenData={tokenData}
+
+            />
+
+          </div>
+
         </div>
+
+
+        {/* RIGHT PANEL */}
+        <div
+          className={`${
+            mobilePanel === 'trade'
+              ? 'flex'
+              : 'hidden'
+          }
+          md:flex
+          w-full
+          md:w-[320px]
+          lg:w-[340px]
+          shrink-0
+          h-full
+          overflow-hidden`}
+        >
+
+          <RightPanel
+
+            token={selectedToken}
+
+            tokenData={tokenData}
+
+          />
+
+        </div>
+
       </div>
+
     </div>
   );
 }
